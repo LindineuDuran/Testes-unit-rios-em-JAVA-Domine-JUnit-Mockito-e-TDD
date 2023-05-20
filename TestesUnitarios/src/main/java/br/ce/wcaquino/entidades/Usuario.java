@@ -1,20 +1,13 @@
 package br.ce.wcaquino.entidades;
 
-public class Usuario {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Usuario
+{
 	private String nome;
-	
-	public Usuario() {}
-	
-	public Usuario(String nome) {
-		this.nome = nome;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 }
