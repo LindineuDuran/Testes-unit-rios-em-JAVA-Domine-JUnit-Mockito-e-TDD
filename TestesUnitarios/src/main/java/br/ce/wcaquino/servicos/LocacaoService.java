@@ -8,6 +8,7 @@ import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.utils.DataUtils;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 public class LocacaoService
@@ -36,8 +37,8 @@ public class LocacaoService
 
         //verificação
         Assert.assertTrue(locacaoTest.getValor() == locacaoRef.getValor());
-        System.out.println(DataUtils.isMesmaData(locacaoTest.getDataLocacao(), new Date()));
-        System.out.println(DataUtils.isMesmaData(locacaoTest.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+        Assert.assertTrue(DataUtils.isMesmaData(locacaoRef.getDataLocacao(), new Date()));
+        Assert.assertTrue(DataUtils.isMesmaData(locacaoRef.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 
 	}
 
