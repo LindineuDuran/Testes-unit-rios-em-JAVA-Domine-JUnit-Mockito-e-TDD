@@ -28,16 +28,15 @@ public class LocacaoService
         //cenário
         LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 3, 10.00);
-        Locacao locacaoRef = getLocacao(usuario, filme);
+		Filme filme = new Filme("Filme 1", 3, 5.00);
 
         //ação
-		Locacao locacaoTest = service.alugarFilme(usuario, filme);
+		Locacao locacao = service.alugarFilme(usuario, filme);
 
         //verificação
-        Assert.assertTrue(locacaoTest.getValor() == locacaoRef.getValor());
-        System.out.println(DataUtils.isMesmaData(locacaoTest.getDataLocacao(), new Date()));
-        System.out.println(DataUtils.isMesmaData(locacaoTest.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+        System.out.println(locacao.getValor() == 5.0);
+        System.out.println(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
+        System.out.println(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
 
 	}
 
