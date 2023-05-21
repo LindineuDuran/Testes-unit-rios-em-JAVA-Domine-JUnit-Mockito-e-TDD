@@ -12,3 +12,4 @@ Conheça boas práticas e aprenda a utilizar as principais ferramentas do mercad
 - Que um código legível é melhor que um código documentado
 
 - [Testes unitários em JAVA: Domine JUnit, Mockito e TDD](https://ibm-learning.udemy.com/course/testes-unitarios-em-java)
+- [xUnit Test Patterns](https://martinfowler.com/books/meszaros.html)
