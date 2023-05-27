@@ -6,6 +6,7 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -21,17 +22,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LocacaoServiceTest
 {
+    private LocacaoService service;
+
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Before
+    public void setup()
+    {
+        service = new LocacaoService();
+    }
+
     @Test
     public void testeLocacao() throws Exception
     {
         //cenário
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme 1", 3, 5.00);
 
@@ -48,21 +56,17 @@ public class LocacaoServiceTest
     public void testeLocacaoFilmeSemEstoque() throws Exception
     {
         //cenário
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme 2", 0, 4.00);
 
         //ação
         service.alugarFilme(usuario, filme);
-
-        System.out.println("Forma Elegante");
     }
 
     @Test //Forma Robusta
     public void testeLocacaoUsuarioVazio() throws FilmeSemEstoqueException
     {
         //cenario
-        LocacaoService service = new LocacaoService();
         Filme filme = new Filme("Filme 2", 1, 4.0);
 
         //acao
@@ -75,15 +79,12 @@ public class LocacaoServiceTest
         {
             assertThat(e.getMessage(), is("Usuario vazio"));
         }
-
-        System.out.println("Forma Robusta");
     }
 
     @Test //Forma Nova
     public void testeLocacaoFilmeVazio() throws FilmeSemEstoqueException, LocadoraException
     {
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 1");
 
         exception.expect(LocadoraException.class);
@@ -91,7 +92,5 @@ public class LocacaoServiceTest
 
         //acao
         service.alugarFilme(usuario, null);
-
-        System.out.println("Forma Nova");
     }
 }
