@@ -6,21 +6,27 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 
 public class LocacaoService
 {
-    public Locacao alugarFilme(Usuario usuario, Filme filme) throws FilmeSemEstoqueException, LocadoraException
+    public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException
 	{
-        if(usuario == null) { throw new LocadoraException("Usuario vazio"); }
+        if(usuario == null) { throw new LocadoraException("Usuário vazio"); }
 
-        if(filme == null) { throw new LocadoraException("Filme vazio"); }
+        if(filmes == null || filmes.isEmpty()) { throw new LocadoraException("Lista de Filmes vazia"); }
 
-        if(filme.getEstoque() == 0) { throw new FilmeSemEstoqueException(); }
+        List<Filme> filmesLocar = new ArrayList<>();
+        filmes.forEach( f -> { if(f.getEstoque() != 0) {  filmesLocar.add(f); } });
 
-        Locacao locacao = getLocacao(usuario, filme);
+        if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
+
+        Locacao locacao = getLocacao(usuario, filmesLocar);
+
 
         //Salvando a locacao...
         //TODO adicionar método para salvar
@@ -28,13 +34,18 @@ public class LocacaoService
         return locacao;
     }
 
-    private static Locacao getLocacao(Usuario usuario, Filme filme)
+    private static Locacao getLocacao(Usuario usuario, List<Filme> filmes)
     {
         Locacao locacao = new Locacao();
-        locacao.setFilme(filme);
+        locacao.setFilmes(filmes);
         locacao.setUsuario(usuario);
         locacao.setDataLocacao(new Date());
-        locacao.setValor(filme.getPrecoLocacao());
+
+        Double[] valorLocacao = new Double[1];
+        valorLocacao[0] = 0.0;
+        filmes.forEach(f -> { valorLocacao[0] += f.getPrecoLocacao();});
+
+        locacao.setValor(valorLocacao[0]);
 
         //Entrega no dia seguinte
         locacao = getDataEntrega(locacao);
