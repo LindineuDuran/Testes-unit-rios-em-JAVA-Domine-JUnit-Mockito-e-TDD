@@ -23,7 +23,8 @@ public class LocacaoService
         List<Filme> filmesLocar = new ArrayList<>();
         filmes.forEach( f -> { if(f.getEstoque() != 0) {  filmesLocar.add(f); } });
 
-        if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
+        //if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
+        if(filmesLocar.size() == 0) {throw new FilmeSemEstoqueException();}
 
         Locacao locacao = getLocacao(usuario, filmesLocar);
 
@@ -43,7 +44,24 @@ public class LocacaoService
 
         Double[] valorLocacao = new Double[1];
         valorLocacao[0] = 0.0;
-        filmes.forEach(f -> { valorLocacao[0] += f.getPrecoLocacao();});
+
+        int[] contador = new int[1];
+        contador[0] = 0;
+
+        filmes.forEach(f -> {
+            contador[0]++;
+            Double valorFilme = f.getPrecoLocacao();
+
+            switch (contador[0])
+            {
+                case 3: valorFilme = valorFilme * 0.75; break;
+                case 4: valorFilme = valorFilme * 0.5; break;
+                case 5: valorFilme = valorFilme * 0.25; break;
+                case 6: valorFilme = 0d; break;
+            }
+
+            valorLocacao[0] += valorFilme;
+        });
 
         locacao.setValor(valorLocacao[0]);
 
