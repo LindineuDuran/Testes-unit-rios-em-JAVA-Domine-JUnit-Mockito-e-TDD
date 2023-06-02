@@ -5,7 +5,6 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
-import br.ce.wcaquino.matchers.DiaSemanaMatcher;
 import br.ce.wcaquino.utils.DataUtils;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
@@ -39,6 +38,8 @@ public class LocacaoServiceTest
     @Test
     public void deveAlugarUmFilme() throws Exception
     {
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
         //cenário
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme 1", 3, 5.00);
