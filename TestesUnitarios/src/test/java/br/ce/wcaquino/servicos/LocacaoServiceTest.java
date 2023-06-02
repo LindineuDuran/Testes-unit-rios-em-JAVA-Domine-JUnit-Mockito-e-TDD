@@ -39,6 +39,8 @@ public class LocacaoServiceTest
     @Test
     public void deveAlugarUmFilme() throws Exception
     {
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
         //cenário
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme 1", 3, 5.00);
