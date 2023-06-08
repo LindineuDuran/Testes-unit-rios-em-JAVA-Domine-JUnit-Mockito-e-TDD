@@ -40,6 +40,10 @@ public class LocacaoService
         return locacao;
     }
 
+    public void setLocacaoDAO(LocacaoDAO dao)
+    {
+        this.dao = dao;
+    }
     private static Locacao getLocacao(Usuario usuario, List<Filme> filmes)
     {
         Locacao locacao = new Locacao();
