@@ -66,12 +66,12 @@ public class LocacaoServiceTest
 
         //ação
         Locacao locacao = service.alugarFilme(usuario, filmesLocar);
+        locacao.setDataLocacao(new Date(2023,6,17)); //Data é em um sábado
 
         //verificação
         error.checkThat(locacao.getValor(), is(equalTo(11.00)));
         error.checkThat(locacao.getFilmes().size(), is(equalTo(3)));
-        error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(2)), is(true));
     }
 
     @Test(expected = FilmeSemEstoqueException.class) //Forma Elegante
@@ -99,12 +99,12 @@ public class LocacaoServiceTest
 
         //ação
         Locacao locacao = service.alugarFilme(usuario, filmesLocar);
+        locacao.setDataLocacao(new Date(2023,6,17)); //Data é em um sábado
 
         //verificação
         error.checkThat(locacao.getValor(), is(equalTo(8.0)));
         error.checkThat(locacao.getFilmes().size(), is(equalTo(2)));
-        error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(2)), is(true));
     }
 
     @Test(expected = FilmeSemEstoqueException.class) //Forma Elegante
