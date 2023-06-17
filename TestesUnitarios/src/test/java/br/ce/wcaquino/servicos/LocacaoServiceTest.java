@@ -1,17 +1,18 @@
 package br.ce.wcaquino.servicos;
 
 import br.ce.wcaquino.daos.LocacaoDAO;
-import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
-import buildermaster.BuilderMaster;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
+
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -31,6 +32,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class LocacaoServiceTest
 {
     private LocacaoService service;
+    private SPCService spc;
+    private LocacaoDAO dao;
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -42,8 +45,11 @@ public class LocacaoServiceTest
     public void setup()
     {
         service = new LocacaoService();
-        LocacaoDAO dao = new LocacaoDAOFake();
+        dao = Mockito.mock(LocacaoDAO.class);
         service.setLocacaoDAO(dao);
+
+        spc = Mockito.mock(SPCService.class);
+        service.setSPCService(spc);
     }
 
     @Test
@@ -74,12 +80,12 @@ public class LocacaoServiceTest
 
         //ação
         Locacao locacao = service.alugarFilme(usuario, filmesLocar);
+        locacao.setDataLocacao(new Date(2023,6,17)); //Data é em um sábado
 
         //verificação
         error.checkThat(locacao.getValor(), is(equalTo(11.00)));
         error.checkThat(locacao.getFilmes().size(), is(equalTo(3)));
-        error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(2)), is(true));
     }
 
     @Test(expected = FilmeSemEstoqueException.class) //Forma Elegante
@@ -107,12 +113,12 @@ public class LocacaoServiceTest
 
         //ação
         Locacao locacao = service.alugarFilme(usuario, filmesLocar);
+        locacao.setDataLocacao(new Date(2023,6,17)); //Data é em um sábado
 
         //verificação
         error.checkThat(locacao.getValor(), is(equalTo(8.0)));
         error.checkThat(locacao.getFilmes().size(), is(equalTo(2)));
-        error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+        error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(2)), is(true));
     }
 
     @Test(expected = FilmeSemEstoqueException.class) //Forma Elegante
@@ -246,8 +252,20 @@ public class LocacaoServiceTest
         assertThat(retorno.getDataRetorno(), caiNumaSegunda());
     }
 
-    public static void main(String[] args)
+    @Test
+    public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException, LocadoraException
     {
-        new BuilderMaster().gerarCodigoClasse(Locacao.class);
+        //cenario
+        Usuario usuario = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuario 2").agora();
+        List<Filme> filmes = Arrays.asList(umFilme().agora());
+
+        when(spc.possuiNegativacao(usuario)).thenReturn(true);
+
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Usuário Negativado");
+
+        //acao
+        service.alugarFilme(usuario, filmes);
     }
 }

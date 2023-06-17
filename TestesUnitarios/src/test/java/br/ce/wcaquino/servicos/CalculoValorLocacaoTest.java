@@ -27,6 +27,8 @@ import static org.junit.Assert.assertThat;
 public class CalculoValorLocacaoTest
 {
     private LocacaoService service;
+    private SPCService spc;
+    private LocacaoDAO dao;
 
     @Parameter
     public List<Filme> filmes;
@@ -41,8 +43,11 @@ public class CalculoValorLocacaoTest
     public void setup()
     {
         service = new LocacaoService();
-        LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+        dao = Mockito.mock(LocacaoDAO.class);
         service.setLocacaoDAO(dao);
+
+        spc = Mockito.mock(SPCService.class);
+        service.setSPCService(spc);
     }
 
     private static Filme filme1 = umFilme().agora();
