@@ -19,6 +19,8 @@ public class LocacaoService
 {
     private LocacaoDAO dao;
 
+    public void setLocacaoDAO(LocacaoDAO dao) {this.dao = dao;}
+
     public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException
 	{
         if(usuario == null) { throw new LocadoraException("Usuário vazio"); }
@@ -35,7 +37,7 @@ public class LocacaoService
 
 
         //Salvando a locacao...
-        dao.salvar(locacao);
+        //dao.salvar(locacao);
 
         return locacao;
     }
