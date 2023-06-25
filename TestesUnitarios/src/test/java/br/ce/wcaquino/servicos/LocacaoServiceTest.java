@@ -10,10 +10,7 @@ import br.ce.wcaquino.utils.DataUtils;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import static br.ce.wcaquino.builders.LocacaoBuilder.umaLocacao;
 import static br.ce.wcaquino.utils.DataUtils.*;
@@ -328,5 +325,25 @@ public class LocacaoServiceTest
 
         //acao
         service.alugarFilme(usuario, filmes);
+    }
+
+    @Test
+    public void deveProrrogarUmaLocacao()
+    {
+        //cenario
+        Locacao locacao = umaLocacao().agora();
+
+        //acao
+        service.prorrogarLocacao(locacao, 3);
+
+        //verificacao
+        ArgumentCaptor<Locacao> argCapt = ArgumentCaptor.forClass(Locacao.class);
+        verify(dao).salvar(argCapt.capture());
+        Locacao locacaoRetornada = argCapt.getValue();
+
+        assertThat(locacaoRetornada.getValor(), is(12.0));
+        assertThat(locacaoRetornada.getDataLocacao(), ehHoje());
+        assertThat(locacaoRetornada.getDataRetorno(), ehHojeComDiferencaDias(3));
+
     }
 }
