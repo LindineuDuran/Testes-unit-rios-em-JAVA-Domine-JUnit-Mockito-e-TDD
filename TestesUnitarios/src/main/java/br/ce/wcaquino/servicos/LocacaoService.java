@@ -17,92 +17,117 @@ import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 
 public class LocacaoService
 {
-    private LocacaoDAO dao;
-    private SPCService spcService;
-    private EmailService emailService;
+	private LocacaoDAO dao;
+	private SPCService spcService;
+	private EmailService emailService;
 
-    public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException
+	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException
 	{
-        if(usuario == null) { throw new LocadoraException("Usuário vazio"); }
+		if (usuario == null)
+		{
+			throw new LocadoraException("Usuário vazio");
+		}
 
-        if(filmes == null || filmes.isEmpty()) { throw new LocadoraException("Lista de Filmes vazia"); }
+		if (filmes == null || filmes.isEmpty())
+		{
+			throw new LocadoraException("Lista de Filmes vazia");
+		}
 
-        List<Filme> filmesLocar = new ArrayList<>();
-        filmes.forEach( f -> { if(f.getEstoque() != 0) {  filmesLocar.add(f); } });
+		List<Filme> filmesLocar = new ArrayList<>();
+		filmes.forEach(f ->
+		{
+			if (f.getEstoque() != 0)
+			{
+				filmesLocar.add(f);
+			}
+		});
 
-        //if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
-        if(filmesLocar.size() == 0) {throw new FilmeSemEstoqueException();}
+		//if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
+		if (filmesLocar.size() == 0)
+		{
+			throw new FilmeSemEstoqueException();
+		}
 
-        Locacao locacao = getLocacao(usuario, filmesLocar);
+		Locacao locacao = getLocacao(usuario, filmesLocar);
 
-        if(spcService.possuiNegativacao(usuario)) {throw new LocadoraException("Usuário Negativado");}
+		if (spcService.possuiNegativacao(usuario))
+		{
+			throw new LocadoraException("Usuário Negativado");
+		}
 
-        //Salvando a locacao...
-        dao.salvar(locacao);
+		//Salvando a locacao...
+		dao.salvar(locacao);
 
-        return locacao;
-    }
+		return locacao;
+	}
 
-    public void notificarAtraso()
-    {
-        List<Locacao> locacoes = dao.obterLocacoesPendentes();
-        locacoes.forEach( l -> {
-            if(l.getDataRetorno().before(new Date())) {emailService.notificarAtraso(l.getUsuario());}
-        });
-    }
+	public void notificarAtraso()
+	{
+		List<Locacao> locacoes = dao.obterLocacoesPendentes();
+		locacoes.forEach(l ->
+		{
+			if (l.getDataRetorno().before(new Date()))
+			{
+				emailService.notificarAtraso(l.getUsuario());
+			}
+		});
+	}
 
-    public void setLocacaoDAO(LocacaoDAO dao)
-    {
-        this.dao = dao;
-    }
+	private static Locacao getLocacao(Usuario usuario, List<Filme> filmes)
+	{
+		Locacao locacao = new Locacao();
+		locacao.setFilmes(filmes);
+		locacao.setUsuario(usuario);
+		locacao.setDataLocacao(new Date());
 
-    public void setSPCService(SPCService spc) {spcService = spc;}
+		Double[] valorLocacao = new Double[1];
+		valorLocacao[0] = 0.0;
 
-    public void setEmailService(EmailService email) {emailService = email;}
+		int[] contador = new int[1];
+		contador[0] = 0;
 
-    private static Locacao getLocacao(Usuario usuario, List<Filme> filmes)
-    {
-        Locacao locacao = new Locacao();
-        locacao.setFilmes(filmes);
-        locacao.setUsuario(usuario);
-        locacao.setDataLocacao(new Date());
+		filmes.forEach(f ->
+		{
+			contador[0]++;
+			Double valorFilme = f.getPrecoLocacao();
 
-        Double[] valorLocacao = new Double[1];
-        valorLocacao[0] = 0.0;
+			switch (contador[0])
+			{
+			case 3:
+				valorFilme = valorFilme * 0.75;
+				break;
+			case 4:
+				valorFilme = valorFilme * 0.5;
+				break;
+			case 5:
+				valorFilme = valorFilme * 0.25;
+				break;
+			case 6:
+				valorFilme = 0d;
+				break;
+			}
 
-        int[] contador = new int[1];
-        contador[0] = 0;
+			valorLocacao[0] += valorFilme;
+		});
 
-        filmes.forEach(f -> {
-            contador[0]++;
-            Double valorFilme = f.getPrecoLocacao();
+		locacao.setValor(valorLocacao[0]);
 
-            switch (contador[0])
-            {
-                case 3: valorFilme = valorFilme * 0.75; break;
-                case 4: valorFilme = valorFilme * 0.5; break;
-                case 5: valorFilme = valorFilme * 0.25; break;
-                case 6: valorFilme = 0d; break;
-            }
+		//Entrega no dia seguinte
+		locacao = getDataEntrega(locacao);
+		return locacao;
+	}
 
-            valorLocacao[0] += valorFilme;
-        });
+	private static Locacao getDataEntrega(Locacao locacao)
+	{
+		Date dataEntrega = new Date();
+		dataEntrega = adicionarDias(dataEntrega, 1);
 
-        locacao.setValor(valorLocacao[0]);
+		if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
+		{
+			dataEntrega = adicionarDias(dataEntrega, 1);
+		}
+		locacao.setDataRetorno(dataEntrega);
 
-        //Entrega no dia seguinte
-        locacao = getDataEntrega(locacao);
-        return locacao;
-    }
-
-    private static Locacao getDataEntrega(Locacao locacao)
-    {
-        Date dataEntrega = new Date();
-        dataEntrega = adicionarDias(dataEntrega, 1);
-
-        if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {dataEntrega = adicionarDias(dataEntrega, 1);}
-        locacao.setDataRetorno(dataEntrega);
-
-        return locacao;
-    }
+		return locacao;
+	}
 }
