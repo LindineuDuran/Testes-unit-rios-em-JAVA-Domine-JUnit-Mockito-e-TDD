@@ -14,8 +14,6 @@ import org.mockito.Mockito;
 
 import static br.ce.wcaquino.builders.LocacaoBuilder.umaLocacao;
 import static br.ce.wcaquino.utils.DataUtils.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -29,6 +27,7 @@ import static br.ce.wcaquino.matchers.MatchersProprios.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest
 {
@@ -294,7 +293,11 @@ public class LocacaoServiceTest
     {
         //cenario
         Usuario usuario = umUsuario().agora();
-        List<Locacao> locacoes = Arrays.asList(umaLocacao().atrasada().comUsuario(usuario).agora());
+        Usuario usuario2 = umUsuario().comNome("Usuário em dia").agora();
+        Usuario usuario3 = umUsuario().comNome("Outro atrasado").agora();
+        List<Locacao> locacoes = Arrays.asList(umaLocacao().atrasada().comUsuario(usuario).agora(),
+                                               umaLocacao().comUsuario(usuario2).agora(),
+                                               umaLocacao().atrasada().comUsuario(usuario3).agora());
 
         when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 
@@ -303,5 +306,8 @@ public class LocacaoServiceTest
 
         //verificacao
         verify(email).notificarAtraso(usuario);
+        verify(email).notificarAtraso(usuario3);
+        verify(email, never()).notificarAtraso(usuario2);
+        verifyNoMoreInteractions(email);
     }
 }
