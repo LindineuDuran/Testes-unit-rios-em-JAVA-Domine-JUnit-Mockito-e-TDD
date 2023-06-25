@@ -36,7 +36,19 @@ public class DataUtils
 	public static Date obterDataComDiferencaDias(int dias) {
 		return adicionarDias(new Date(), dias);
 	}
-	
+
+	/**
+	 * Retorna a data atual com a diferenca de dias enviados por parametro
+	 * 		a Data pode estar no futuro (parametro positivo) ou no passado (parametro negativo)
+	 *
+	 * @param dataAtual data base a ser incrementado/decrementado
+	 * @param dias Quantidade de dias a ser incrementado/decrementado
+	 * @return Data atualizada
+	 */
+	public static Date obterDataComDiferencaDias(Date dataAtual, int dias) {
+		return adicionarDias(dataAtual, dias);
+	}
+
 	/**
 	 * Retorna uma instância de <code>Date</code> refletindo os valores passados por parametro
 	 * 

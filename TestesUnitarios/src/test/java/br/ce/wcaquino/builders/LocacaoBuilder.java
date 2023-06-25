@@ -17,7 +17,7 @@ public class LocacaoBuilder
     private Locacao elemento;
     private LocacaoBuilder(){}
 
-    public static LocacaoBuilder umLocacao()
+    public static LocacaoBuilder umaLocacao()
     {
         LocacaoBuilder builder = new LocacaoBuilder();
         inicializarDadosPadroes(builder);
@@ -68,4 +68,11 @@ public class LocacaoBuilder
     }
 
     public Locacao agora() { return elemento; }
+
+    public LocacaoBuilder atrasada()
+    {
+        elemento.setDataLocacao(DataUtils.obterDataComDiferencaDias(-4));
+        elemento.setDataRetorno(DataUtils.obterDataComDiferencaDias(-2));
+        return this;
+    }
 }
