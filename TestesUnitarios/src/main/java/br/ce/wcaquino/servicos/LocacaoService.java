@@ -43,10 +43,7 @@ public class LocacaoService
 		});
 
 		//if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
-		if (filmesLocar.size() == 0)
-		{
-			throw new FilmeSemEstoqueException();
-		}
+		if (filmesLocar.size() == 0) {throw new FilmeSemEstoqueException();}
 
 		Locacao locacao = getLocacao(usuario, filmesLocar);
 
@@ -101,7 +98,7 @@ public class LocacaoService
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
-		locacao.setDataLocacao(new Date());
+		locacao.setDataLocacao(Calendar.getInstance().getTime());
 
 		Double[] valorLocacao = new Double[1];
 		valorLocacao[0] = 0.0;
@@ -142,7 +139,7 @@ public class LocacaoService
 
 	private static Locacao getDataEntrega(Locacao locacao)
 	{
-		Date dataEntrega = new Date();
+		Date dataEntrega = Calendar.getInstance().getTime();
 		dataEntrega = adicionarDias(dataEntrega, 1);
 
 		if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
