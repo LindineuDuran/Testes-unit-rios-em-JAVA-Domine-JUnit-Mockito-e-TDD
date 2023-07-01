@@ -1,9 +1,13 @@
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\entidades\Filme.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\servicos\LocacaoService.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\exceptions\FilmeSemEstoqueException.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\servicos\EmailService.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\exceptions\LocadoraException.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\servicos\Calculadora.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\entidades\Usuario.java
-D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\exceptions\FilmeSemEstoqueException.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\daos\LocacaoDAOFake.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\entidades\Locacao.java
-D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\exceptions\LocadoraException.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\servicos\SPCService.java
+D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\daos\LocacaoDAO.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\exceptions\NaoPodeDividirPorZeroException.java
 D:\GitHub\TestesUnitariosEmJAVA-Domine-JUnit-Mockito-e-TDD\TestesUnitarios\src\main\java\br\ce\wcaquino\utils\DataUtils.java

@@ -16,3 +16,5 @@ Conheça boas práticas e aprenda a utilizar as principais ferramentas do mercad
 - [API de matchers do Hamcrest](https://junit.org/junit4/javadoc/4.12/org/junit/rules/TestRule.html)
 - [Mockito And Private Methods](https://github.com/mockito/mockito/wiki/Mockito-And-Private-Methods)
 - [Testing Private Methods with JUnit and SuiteRunner](https://www.artima.com/articles/testing-private-methods-with-junit-and-suiterunner)
+- [Configurando Maven no Linux (Ubuntu)](https://adrianoaquino.wordpress.com/2009/11/02/configurando-maven-no-linux-ubuntu/)
+- [Como instalar o MAVEN no Windows](https://dicasdeprogramacao.com.br/como-instalar-o-maven-no-windows/)
