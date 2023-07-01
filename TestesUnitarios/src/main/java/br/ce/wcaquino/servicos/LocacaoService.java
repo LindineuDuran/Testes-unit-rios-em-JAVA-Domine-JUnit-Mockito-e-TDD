@@ -34,13 +34,7 @@ public class LocacaoService
 		}
 
 		List<Filme> filmesLocar = new ArrayList<>();
-		filmes.forEach(f ->
-		{
-			if (f.getEstoque() != 0)
-			{
-				filmesLocar.add(f);
-			}
-		});
+		filmes.forEach(f -> {if (f.getEstoque() != 0) {filmesLocar.add(f);}});
 
 		//if(filmesLocar.size() < filmes.size()) {throw new FilmeSemEstoqueException();}
 		if (filmesLocar.size() == 0) {throw new FilmeSemEstoqueException();}
@@ -71,13 +65,7 @@ public class LocacaoService
 	public void notificarAtraso()
 	{
 		List<Locacao> locacoes = dao.obterLocacoesPendentes();
-		locacoes.forEach(l ->
-		{
-			if (l.getDataRetorno().before(new Date()))
-			{
-				emailService.notificarAtraso(l.getUsuario());
-			}
-		});
+		locacoes.forEach(l -> {if (l.getDataRetorno().before(new Date())) {emailService.notificarAtraso(l.getUsuario());}});
 	}
 
 	public void prorrogarLocacao(Locacao locacao, int dias)
@@ -93,12 +81,22 @@ public class LocacaoService
 		dao.salvar(novaLocacao);
 	}
 
-	private static Locacao getLocacao(Usuario usuario, List<Filme> filmes)
+	private Locacao getLocacao(Usuario usuario, List<Filme> filmes)
 	{
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
 		locacao.setDataLocacao(Calendar.getInstance().getTime());
+		locacao.setValor(calcularValorLocacao(filmes));
+
+		//Entrega no dia seguinte
+		locacao = getDataEntrega(locacao);
+		return locacao;
+	}
+
+	private Double calcularValorLocacao(List<Filme> filmes)
+	{
+		System.out.println("Estou calculando o valor da locação");
 
 		Double[] valorLocacao = new Double[1];
 		valorLocacao[0] = 0.0;
@@ -129,12 +127,7 @@ public class LocacaoService
 
 			valorLocacao[0] += valorFilme;
 		});
-
-		locacao.setValor(valorLocacao[0]);
-
-		//Entrega no dia seguinte
-		locacao = getDataEntrega(locacao);
-		return locacao;
+		return valorLocacao[0];
 	}
 
 	private static Locacao getDataEntrega(Locacao locacao)
