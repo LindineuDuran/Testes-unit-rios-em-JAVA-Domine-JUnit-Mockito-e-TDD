@@ -12,3 +12,9 @@ Conheça boas práticas e aprenda a utilizar as principais ferramentas do mercad
 - Que um código legível é melhor que um código documentado
 
 - [Testes unitários em JAVA: Domine JUnit, Mockito e TDD](https://ibm-learning.udemy.com/course/testes-unitarios-em-java)
+- [xUnit Test Patterns](https://martinfowler.com/books/meszaros.html)
+- [API de matchers do Hamcrest](https://junit.org/junit4/javadoc/4.12/org/junit/rules/TestRule.html)
+- [Mockito And Private Methods](https://github.com/mockito/mockito/wiki/Mockito-And-Private-Methods)
+- [Testing Private Methods with JUnit and SuiteRunner](https://www.artima.com/articles/testing-private-methods-with-junit-and-suiterunner)
+- [Configurando Maven no Linux (Ubuntu)](https://adrianoaquino.wordpress.com/2009/11/02/configurando-maven-no-linux-ubuntu/)
+- [Como instalar o MAVEN no Windows](https://dicasdeprogramacao.com.br/como-instalar-o-maven-no-windows/)
