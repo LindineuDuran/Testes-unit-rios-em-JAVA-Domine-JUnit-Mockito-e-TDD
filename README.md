@@ -14,3 +14,4 @@ Conheça boas práticas e aprenda a utilizar as principais ferramentas do mercad
 - [Testes unitários em JAVA: Domine JUnit, Mockito e TDD](https://ibm-learning.udemy.com/course/testes-unitarios-em-java)
 - [xUnit Test Patterns](https://martinfowler.com/books/meszaros.html)
 - [API de matchers do Hamcrest](https://junit.org/junit4/javadoc/4.12/org/junit/rules/TestRule.html)
+- [Mockito And Private Methods](https://github.com/mockito/mockito/wiki/Mockito-And-Private-Methods)
